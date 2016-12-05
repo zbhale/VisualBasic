@@ -1,0 +1,545 @@
+'Zachary Hale
+'Athletics IT Dept
+'Technology Specialist II
+'10/25/2016
+'
+'Script to automatically map to network drives and printers
+'
+'IMPORTANT: Please make sure the user has access to the network 
+'	drives and printers before running this script
+
+
+Set oWSH = CreateObject("WScript.Shell")
+ vbsInterpreter = "cscript.exe"
+Call ForceConsole()
+
+On Error Resume Next       ' In case some error occurs
+
+'§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+' define some variables we are going to use
+'§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+Dim WSHNetwork
+Dim WSHShell
+Dim WSHSysEnv
+Dim GroupDict
+Dim oShell, oNet, oFSO, oWshNetwork, oGroupDict
+Dim netConnection
+Dim user, compName
+
+
+' setup some objects that we'll be using
+'§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+Set WSHNetwork = WScript.CreateObject("WScript.Network")
+Set WSHShell = WScript.CreateObject("WScript.Shell")
+Set WSHSysEnv = WSHShell.Environment("PROCESS")
+Set oShell = CreateObject("Wscript.Shell")
+Set oNet = CreateObject("Wscript.Network")
+Set netConnection = CreateObject("WScript.Network") 
+
+
+user=oShell.ExpandEnvironmentStrings("%UserName%")
+compName=oShell.ExpandEnvironmentStrings("%ComputerName%")
+
+
+'§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+'Checks your Group Membership
+'Maps your Network Drives Based on that
+'Then If you have special drive, we have written in assignments based on your user
+'Then connects you to Network Printers based on your group membership
+'Then If you have special Printers, we have written in assignments based on your user
+'INS has Examples of Special users and so does the SoonerVision Group
+'§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+
+
+'§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+'All Assignments of Drives were attempted to be made by the MapD Sub but this Function 
+'Only works If the Network Drive is in the \\<ServerName>\<directory>\ Subfolder. If the Drive
+'Was located elsewhere a custom call was created for them.
+'§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+
+
+
+' --- Group --------------------------------------------------------
+'  - Athletics Complex Housing
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+End If
+
+' --- Group --------------------------------------------------------
+'  - Athletics Administration
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<BlackAndWhitePrinter>"
+End If
+
+' --- Group --------------------------------------------------------
+'  - Athletics Student LIfe - Academic Services
+' ------------------------------------------------------------------
+'No Printers because there are so many for this Group
+If IsMember("<AD Group>" OR "<AD Group>" OR "<AD Group>" OR "<AD Group>" OR "<AD Group>" OR "<AD Group>") Then
+	MapD "<directory>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Business Office
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+	
+End If
+
+' --- Group --------------------------------------------------------
+'  - Compliance
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Athletics Developement
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "ATH_DEV1"
+	MapP "<ColorPrinter>"
+	MapP "<ColorPrinter>"
+
+End If
+
+
+' --- Group --------------------------------------------------------
+'  - Equipment
+' ------------------------------------------------------------------
+'§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§§
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "I:", "<directory>\<SubFolder>"
+	
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Event Managment
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Facilities/Shop
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<BlackAndWhitePrinter>"
+	
+End If
+
+' --- Group --------------------------------------------------------
+'  - Athletic Information Systems
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapUD "I:", "<directory>"
+	
+	If user = "<username>" Then
+		MapUD "J:", "<directory>"
+		MapUD "K:", "<directory>\<SubFolder>"
+		MapUD "L:", "<directory>"
+		MapUD "Z:", "<directory>\<SubFolder>\Zachary"
+	End If	
+	
+	If user = "<username>" Then
+		MapUD "J:", "<directory>"
+		MapUD "K:", "<directory>\<SubFolder>"
+		MapUD "L:", "<directory>"
+		MapUD "Z:", "<directory>\<SubFolder>\Zachary"
+	End If
+	
+	
+	
+	WScript.Echo ""
+	MapP "<ColorPrinter>"
+
+	
+End If
+
+' --- Group --------------------------------------------------------
+'  - Licensing
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Men's Baseball
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "Z:", "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Men's Basketball
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Media Relations
+' ------------------------------------------------------------------
+'Only 1 printer because I dont know which of their other 4 they  would want everyone to use
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Men's Football
+' ------------------------------------------------------------------
+'No Printers because there are so many for this Group
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Men's Golf
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Men's Gymnastics
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - MMarketing Department
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Men's Tennis
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "Z:", "<directory>\<SubFolder>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Men's Wrestling
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "Z:", "<directory>"
+	MapP "<BlackAndWhitePrinter>"
+	MapP "<ColorPrinter>"
+	
+End If
+
+' --- Group --------------------------------------------------------
+'  - Ten Club
+' ------------------------------------------------------------------
+
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - SoonerVision
+' ------------------------------------------------------------------
+'No Printer Will Be Added
+If IsMember("<AD Group>") Then
+	MapUD "P:", "<directory>"
+	MapUD "V:", "<directory>"
+	
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Ticket Office
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Track and Field for both Men and Women
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "Z:", "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Varsity O Club
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Women's Basketball
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Weight Training
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Women's Golf
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Women's Gymnastics
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Women's Rowing
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "Z:", "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Women's Softball
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "Z:", "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Women's Soccer
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "Z:", "<directory>"
+	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+' --- Group --------------------------------------------------------
+'  - Women's Tennis
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "Z:", "<directory>\<SubFolder>"
+	MapP "<BlackAndWhitePrinter>"
+	MapP "<ColorPrinter>"
+
+End If
+
+
+
+' --- Group --------------------------------------------------------
+'  - Women's Volleyball
+' ------------------------------------------------------------------
+If IsMember("<AD Group>") Then
+	MapD "<directory>"
+	MapUD "Z:", "<directory>"
+	MapP "<BlackAndWhitePrinter>"
+	MapP "<BlackAndWhitePrinter>"
+
+End If
+
+
+'wait(10)
+
+' --- Ismember --------------------------------------------------------
+' This function tests to see If the user is a member of a group
+' ------------------------------------------------------------------------
+Function IsMember(sGroup)
+   Dim sAdsPath, oUser, oGroup
+
+   If IsEmpty(oGroupDict) Then
+      Set oGroupDict = CreateObject("Scripting.Dictionary")
+      oGroupDict.CompareMode = vbTextCompare
+
+      ' ----------------------------------------------------------------------------
+      ' If you are using AD, you'll probably need to use an LDAP command here
+      ' otherwise use the WinNT command
+      ' ----------------------------------------------------------------------------
+      sAdsPath = oNet.UserDomain & "/" & oNet.UserName
+      Set oUser = GetObject("WinNT://" & sAdsPath & ",user")
+
+      For Each oGroup In oUser.Groups
+         oGroupDict.Add oGroup.Name, "-"
+      Next
+
+      Set oUser = Nothing
+   End If
+
+   IsMember = CBool(oGroupDict.Exists(sGroup))
+
+End Function
+
+
+
+' --- FUNCTION -----------------------------------------------------
+' This function waits 1 second per indicated
+' --------------------------------------------------------------------
+Function wait(n)
+    WScript.Sleep Int(n * 1000)
+End Function
+
+' --- FUNCTION -----------------------------------------------------
+' This function Forces script to be executed out of the console
+' --------------------------------------------------------------------
+Function ForceConsole()
+    If InStr(LCase(WScript.FullName), vbsInterpreter) = 0 Then
+        oWSH.Run vbsInterpreter & " //NoLogo " & Chr(34) & WScript.ScriptFullName & Chr(34)
+        WScript.Quit
+    End If
+End Function
+
+' --------------------------------------------------------------------
+' MAPPING NETWORK SHARED DRIVES
+' --------------------------------------------------------------------
+'This function actuall does the Mapping of the Shared Network Drive
+Sub MapDrive(strDrive,strShare)
+   On Error Resume Next
+
+   ' Attempt to map the drive
+   WSHNetwork.MapNetworkDrive strDrive, strShare, TRUE
+
+   ' This will remap the drive If the drive is already mapped
+   If Err.Number Then
+      WSHNetwork.RemoveNetworkDrive strDrive
+      WSHNetwork.MapNetworkDrive strDrive, strShare, TRUE
+   End If
+End Sub
+
+'This function does the Automated Scripting of the Standard \\<ServerName>\<directory> Shared drives 
+Sub MapD(dept)
+	
+	path = "\\<ServerName>\<directory>\"+dept
+	
+	WScript.Echo "Your Shared Drive is being mapped!"
+	MapDrive "H:", path
+	WScript.Echo path +  " has been Mapped to your H: Drive!"
+	WScript.Echo ""
+	WScript.Echo ""
+End Sub
+
+'This function does the Automated Scripting of the non-Standard \\<ServerName>\?????\ Shared drives 
+'You will need to input the full path after the \\<ServerName>\ block so that it will know where to send the drive mapper
+'You also need to give it a letter
+Sub MapUD(letter,location)
+	
+	path = "\\<ServerName>\"+location
+	
+	WScript.Echo "Mapping " + location + " Network Shared Drive!"
+	MapDrive letter, path
+	WScript.Echo path +  " has been Mapped to your " + letter + " Drive!"
+	WScript.Echo ""
+	WScript.Echo ""
+End Sub
+
+'---------------------------------------------------------------------------------
+' MAPPING NETWORK PRINTERS
+'---------------------------------------------------------------------------------
+' Syntax:
+'	netConnection.AddWindowsPrinterConnection "\\full_path", "Display Name"
+' Example:
+'	netConnection.AddWindowsPrinterConnection "\\<PrintServerName>\printer_name", "Color Printer"
+'
+'This Function actually does the Mapping of the printer
+Sub MapPrinter(printName)
+	printerName = "\\<PrintServerName>\"+printName
+	
+	netConnection.AddWindowsPrinterConnection printerName
+	netConnection.SetDefaultPrinter printerName
+
+End Sub
+
+'This Function does the automated scripting of the print out and the calling of MapPrinter.
+Sub MapP(Name)
+	
+	WScript.Echo "Adding Network Printer: " + name
+	MapPrinter name
+	WScript.Echo "Network Printer " + name + ": Completed"
+	WScript.Echo ""
+
+End Sub
