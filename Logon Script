@@ -5,8 +5,8 @@
 '
 'Script to automatically map to network drives and printers
 '
-'IMPORTANT: Please make sure the user has access to the network 
-'	drives and printers before running this script
+'IMPORTANT: Please make sure the user has physical access to the network 
+'as well as AD access to the drives and printers before running this script
 
 
 Set oWSH = CreateObject("WScript.Shell")
@@ -109,9 +109,9 @@ End If
 ' ------------------------------------------------------------------
 If IsMember("<AD Group>") Then
 	MapD "<directory>"
-	MapP "ATH_DEV1"
 	MapP "<ColorPrinter>"
 	MapP "<ColorPrinter>"
+	MapP "<BlackAndWhitePrinter>"
 
 End If
 
@@ -158,14 +158,14 @@ If IsMember("<AD Group>") Then
 		MapUD "J:", "<directory>"
 		MapUD "K:", "<directory>\<SubFolder>"
 		MapUD "L:", "<directory>"
-		MapUD "Z:", "<directory>\<SubFolder>\Zachary"
+		MapUD "Z:", "<directory>\<SubFolder>\subFolder"
 	End If	
 	
 	If user = "<username>" Then
 		MapUD "J:", "<directory>"
 		MapUD "K:", "<directory>\<SubFolder>"
 		MapUD "L:", "<directory>"
-		MapUD "Z:", "<directory>\<SubFolder>\Zachary"
+		MapUD "Z:", "<directory>\<SubFolder>\subFolder"
 	End If
 	
 	
@@ -209,7 +209,6 @@ End If
 ' --- Group --------------------------------------------------------
 '  - Media Relations
 ' ------------------------------------------------------------------
-'Only 1 printer because I dont know which of their other 4 they  would want everyone to use
 If IsMember("<AD Group>") Then
 	MapD "<directory>"
 	MapP "<BlackAndWhitePrinter>"
@@ -220,6 +219,7 @@ End If
 '  - Men's Football
 ' ------------------------------------------------------------------
 'No Printers because there are so many for this Group
+'We still need to go over and manually add them to the printer they are closest to
 If IsMember("<AD Group>") Then
 	MapD "<directory>"
 
